@@ -1,4 +1,5 @@
 build:
+	rm -rf module/releases/
 	python -m build --outdir module/releases/
 
 check:

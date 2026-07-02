@@ -1,2 +1,3 @@
-# Go's BubbleTea Python port.
+__version__ = "0.4.0"
 
+from .bobatea import bobatea
