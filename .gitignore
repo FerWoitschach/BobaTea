@@ -1,7 +1,9 @@
 **/.pyenv/
 **/releases/
+**/build/
 
 __pycache__/
+__coconut_cache__/
 *.py[cod]
 *$py.class
 

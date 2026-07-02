@@ -1,0 +1,1 @@
+def bobatea() -> str = "¡Hola, mundo!"

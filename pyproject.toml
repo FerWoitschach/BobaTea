@@ -15,8 +15,11 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+[tool.hatch.build]
+ignore-vcs = true
+
 [tool.hatch.version]
-path = "module/source/__init__.py"
+path = "module/build/__init__.py"
 
 [tool.hatch.build.targets.sdist]
 exclude = [
@@ -26,7 +29,7 @@ exclude = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["module/source"]
+packages = ["module/build"]
 
 [tool.hatch.build.targets.wheel.sources]
-"module/source" = "tea"
+"module/build" = "tea"
