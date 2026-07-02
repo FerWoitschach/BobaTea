@@ -1,5 +1,5 @@
 __version__ = "0.0.1"
 
-from .bobatea import bobatea
+from .tea import tea
 
-__all__ = ["bobatea"]
+__all__ = ["tea"]

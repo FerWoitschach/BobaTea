@@ -1,0 +1,59 @@
+from typing import Protocol, Tuple, Optional, Callable, Any
+
+class TeaError(Exception):
+	pass
+
+ProgramPanicError       = TeaError("Program experienced a panic.")
+ProgramKilledError      = TeaError("Program was killed.")
+ProgramInterruptedError = TeaError("Program was interrupted.")
+
+TeaMessage = Any
+TeaCommand = Callable[[], TeaMessage]
+
+class Model(Protocol):
+	def init(self) -> Optional[TeaCommand]:
+		...
+
+	def update(self, message: TeaMessage) -> Tuple["Model", Optional[TeaCommand]]:
+		...
+
+	def view(self) -> "View":
+		...
+
+class View:
+	def __init__(
+		self,
+		content: str = "",
+		on_mouse: Optional[Callable[[Any], Optional[TeaCommand]]] = None,
+		cursor: Optional[Any] = None,
+		background_color: Optional[Any] = None,
+		foreground_color: Optional[Any] = None,
+		window_title: str = "",
+		progress_bar: Optional[Any] = None,
+		alt_screen: bool = False,
+		report_focus: bool = False,
+		disable_bracketed_paste_mode: bool = False,
+		mouse_mode: Any = None,
+		keyboard_enhancements: Any = None
+	):
+		self.content = content
+		self.on_mouse = on_mouse
+		self.cursor = cursor
+		self.background_color = background_color
+		self.foreground_color = foreground_color
+		self.window_title = window_title
+		self.progress_bar = progress_bar
+		self.alt_screen = alt_screen
+		self.report_focus = report_focus
+		self.disable_bracketed_paste_mode = disable_bracketed_paste_mode
+		self.mouse_mode = mouse_mode
+		self.keyboard_enhancements = keyboard_enhancements
+
+	def set_content(self, string: str) -> None:
+		self.content = string
+
+
+def new_view(string: str) -> View:
+	view = View()
+	view.set_content(string)
+	return view

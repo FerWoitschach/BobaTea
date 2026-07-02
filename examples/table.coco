@@ -1,0 +1,67 @@
+import sys
+from rich.style import Style
+from rich.box import ROUNDED
+
+from bobatea import tea
+from bobas import table
+
+data State(table: table.Table)
+
+match def update:
+  case (tea.KeyPressMsg(key="esc"), State(table)) =
+    (State(table.blur() if table.focused else table.focus()), None)
+
+  case (tea.KeyPressMsg(key="q" | "ctrl+c"), state) =
+    (state, tea.Quit)
+
+  case (tea.KeyPressMsg(key="enter"), State(table)) =
+    (State(table), tea.printf("Let's go to %s!", table.selected_row()[1]))
+
+  case (msg, State(table)) =
+    match table.update(msg):
+      case (t, c): (State(t), c)
+
+def view(State(table)) =
+  (table.view() + "\n  " + table.help_view() + "\n") |> tea.new_view
+
+
+def main():
+  columns = [
+    table.Column("Rank", width=4),
+    table.Column("City", width=10),
+    table.Column("Country", width=10),
+    table.Column("Population", width=10),
+  ]
+
+  rows = [
+    ["1", "Tokyo", "Japan", "37,274,000"],
+    ["2", "Delhi", "India", "32,065,760"],
+    ["3", "Shanghai", "China", "28,516,904"],
+    ["4", "Dhaka", "Bangladesh", "22,478,116"],
+    ["5", "São Paulo", "Brazil", "22,429,800"],
+    ["100", "Montreal", "Canada", "4,276,526"],
+  ]
+
+  t = table.Table(
+    columns=columns,
+    rows=rows,
+    focused=True,
+    height=7,
+    width=42,
+    box=ROUNDED
+  )
+
+  styles = table.default_styles()
+  styles.header = Style(color="bright_black", bold=False)
+  styles.selected = Style(color="rgb(229,229,229)", bgcolor="rgb(95,0,255)", bold=False)
+
+  program = tea.new_program(
+    init=-> (State(t.set_styles(styles)), None),
+    update=update,
+    view=view
+  )
+  program.run()
+
+
+if __name__ == "__main__":
+  main()
